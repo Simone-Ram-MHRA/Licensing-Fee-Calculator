@@ -1,121 +1,425 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import "./App.css";
-import { HomePage } from "./Home";
-import { CreatorPage } from "./Creator";
-import { SurveyPage } from "./Survey";
-import { ExportToPDFPage } from "./Export";
-import { AnalyticsPage } from "./Analytics";
-import { AnalyticsTabulatorPage } from "./AnalyticsTabulator";
-import { AnalyticsDatatablesPage } from "./AnalyticsDatatables";
+// import React, {Component} from 'react';
+// import { useCallback } from 'react';
+// import "survey-react/survey.css";
+// import * as Survey from "survey-react";
+// import { render } from 'react-dom';
 
-import "bootstrap/dist/css/bootstrap.css";
+// class App extends Component{
+//   constructor(props){
+//     super(props)
+//     this.state={
+//     }
+//     this.onCompleteComponent = this.onCompleteComponent.bind(this)
+//   }
+//  onCompleteComponent = () =>{
+//    this.setState({
+//      isCompleted: true
+//    })
+//   }
 
-import * as Survey from "survey-core";
+//   // results = () =>{
+//   //   const survey = new Model(surveyJson);
+//   //   const alertResults = useCallback((sender) => {
+//       // const results = JSON.stringify(sender.data);
+//       // alert(results);
+//   //   }, []);
+  
+//   //   survey.onComplete.add(alertResults);
+  
+//   //   return <Survey model={survey} />;
+//   // }
 
-export { MyQuestion } from "./MyQuestion";
+//   render(){
+//     var json = {
+    //   "elements": [
+    //       {
+    //           "type": "radiogroup",
+    //           "name": "medicine1",
+    //           "title": "What is the type of your application?",
+    //           "isRequired": true,
+    //           "colCount": 4,
+    //           "choices": [
+    //             "Initial marketing authorisation application", 
+    //             "Variation"
+    //           ]
+    //       },{
+    //         "type": "radiogroup",
+    //         "name": "medicine2",
+    //         "title": "What is the scope of your application?",
+    //         "isRequired": true,
+    //         "colCount": 1,
+    //         "choices": [
+    //           "National (any other case including hybrid applications)",
+    //        "MRDC reliance procedure - Application for GB or UK excluding GB unfettered access route",
+    //        "EC Decision reliance procedure - Automatic recognition application", 
+    //        "Unfettered access route to GB (Previously granted by EU)",
+    //        "Incoming mutual recognition procedure for sale or supply in Northern Ireland and Unfettered access route for UKMA(GB)", 
+    //        "Decentralised procedure for sale or supply in Northern Ireland and Unfettered access route for UKMA(GB)",
+    //        "European reference product application for sale or supply in Northern Ireland"
+    //         ]
+    //     },{
+    //       "type": "radiogroup",
+    //       "name": "medicine3",
+    //       "title": "Has the active substance(s) of your product previously been authorised in the UK?",
+    //       "isRequired": true,
+    //       "colCount": 4,
+    //       "choices": [
+    //         "Yes", 
+    //         "No"
+    //       ]
+    //   },{
+    //     "type": "radiogroup",
+    //     "name": "medicine4",
+    //     "title": "Please confirm the legal basis of your application or whether you intend to submit an extension application:",
+    //     "isRequired": true,
+    //     "colCount": 1,
+    //     "choices": [
+    //       "Regulation 50 (previously Article 8(3) of Directive 2001/83/EC)", 
+    //       "Regulation 50 Article 8(3)",
+    //       "Article 10"
+    //     ]
+    // }
+    //   ]
+//   };
+//     var surveyRender = !this.state.isCompleted ?(
+//       <Survey.Survey
+//         json={json}
+//         showCompletedPage={false}
+//         onComplete={this.onCompleteComponent}   
+//       />
+//     ):null;
 
-import "jquery-ui/themes/base/all.css";
-import "nouislider/distribute/nouislider.css";
-import "select2/dist/css/select2.css";
-import "bootstrap-slider/dist/css/bootstrap-slider.css";
+//     var onSurveyCompletion = this.state.isCompleted ?(
+//       <div>Thanks for completing the survey</div>
+//     ):null;
 
-import "jquery-bar-rating/dist/themes/css-stars.css";
-import "jquery-bar-rating/dist/themes/fontawesome-stars.css";
+    
+//     return(
+//       <div className='App'>
+//         <div>
+//           {surveyRender}
+//           {onSurveyCompletion}
+//         </div>
+//       </div>
 
-import $ from "jquery";
-// import "jquery-ui/ui/widgets/datepicker.js";
-import "select2/dist/js/select2.js";
-import "jquery-bar-rating";
+//     );
+//   }
+// }
 
-//import "icheck/skins/square/blue.css";
-//require("icheck");
-import "pretty-checkbox/dist/pretty-checkbox.css";
+// export default App;
 
-import * as widgets from "surveyjs-widgets";
+import { useCallback } from 'react';
 
-window["$"] = window["jQuery"] = $;
-require("jquery-ui/ui/widgets/datepicker.js");
+import 'survey-core/modern.min.css';
+// import 'survey-core/survey.min.css';
+import { StylesManager, Model, youtubeTags } from 'survey-core';
+import { Survey } from 'survey-react-ui';
 
-//widgets.icheck(Survey, $);
-widgets.prettycheckbox(Survey);
-widgets.select2(Survey, $);
-widgets.inputmask(Survey);
-widgets.jquerybarrating(Survey, $);
-widgets.jqueryuidatepicker(Survey, $);
-widgets.nouislider(Survey);
-widgets.select2tagbox(Survey, $);
-widgets.sortablejs(Survey);
-widgets.ckeditor(Survey);
-widgets.autocomplete(Survey, $);
-widgets.bootstrapslider(Survey);
+StylesManager.applyTheme("modern");
+
+const surveyJson = {
+  "elements": [
+    {
+        "type": "radiogroup",
+        "name": "question1",
+        "title": "What is the type of your application?",
+        "isRequired": true,
+        "colCount": 4,
+        "choices": [
+          "Initial marketing authorisation application", 
+          "Variation"
+        ]
+    },{
+      "type": "radiogroup",
+      "name": "question2",
+      "title": "What is the scope of your application?",
+      "isRequired": true,
+      "colCount": 1,
+      "choices": [
+        "National (any other case including hybrid applications)",
+     "MRDC reliance procedure - Application for GB or UK excluding GB unfettered access route",
+     "EC Decision reliance procedure - Automatic recognition application", 
+     "Unfettered access route to GB (Previously granted by EU)",
+     "Incoming mutual recognition procedure for sale or supply in Northern Ireland and Unfettered access route for UKMA(GB)", 
+     "Decentralised procedure for sale or supply in Northern Ireland and Unfettered access route for UKMA(GB)",
+     "European reference product application for sale or supply in Northern Ireland"
+      ]
+  },{
+    "type": "rating",
+    "name": "question3",
+    "title": "How many strengths of the same dosage form are you submitting? (If it is a single submission, please leave it as 1).",
+    "description": "Where there are different dosage forms present in an application package, a different fee definition may apply for the additional form e.g. cream and ointment might result in two complex fees. In this situation, it is advisable to calculate the fee for each dosage form separately. For further advice, please contact the MHRA at info@mhra.gov.uk ",
+    "isRequired": true,
+    "rateMin": 1,
+    "rateMax": 20,
+    "minRateDescription": "(Most unlikely)",
+    "maxRateDescription": "(Most likely)",
+    "colCount": 1,
+    "choices": [
+      "Yes", 
+      "No"
+    ]
+  },{
+    "type": "radiogroup",
+    "name": "question4",
+    "title": "Has the active substance(s) of your product previously been authorised in the UK?",
+    "isRequired": true,
+    "colCount": 4,
+    "choices": [
+      "Yes", 
+      "No"
+    ]
+},{
+  "type": "radiogroup",
+  "name": "question5",
+  "title": "Please confirm the legal basis of your application or whether you intend to submit an extension application:",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "Regulation 50 (previously Article 8(3) of Directive 2001/83/EC)", 
+    "Regulation 50 Article 8(3)",
+    "Article 10"
+  ]
+},{
+  "type": "radiogroup",
+  "name": "question6",
+  "title": "Is the legal basis of your application?Is the legal basis of your application?",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "Hybrid application - Regulation 52 (previously Article 10.3 of Directive 2001/83/EC)", 
+          "Generic Hybrid", 
+          "Well-established Use", 
+          "New Fixed Combination",
+          "Informed Consent",
+          "Biosimilars",
+          "Generic Product"
+  ]
+},{
+  "type": "radiogroup",
+  "name": "question7",
+  "title": "Please confirm the legal basis of your application or whether you intend to submit an extension application:?",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "Regulation 50 (previously Article 8(3) of Directive 2001/83/EC)", 
+    "Regulation 50 Article 8(3)", 
+     "Article 10"
+  ]
+},{
+  "type": "radiogroup",
+  "name": "question8",
+  "title": "Is the legal basis of your application ?",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "Hybrid application - Regulation 52 (previously Article 10.3 of Directive 2001/83/EC)", 
+        "10(3) - Generic Hybrid",
+        "10(a) - Well-established use",
+        "10(b) - New Fixed Combination",
+        "10(c) - Informed Consent",
+        "10(4) – Biosimilars",
+        "10(1) - Generic Product"
+  ]
+},{
+  "type": "radiogroup",
+  "name": "question9",
+  "title": "Does any of the following apply to your application(s) ?",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "The application lists a new source of active substance not covered by: A European Pharmacopoeia certificate of suitability (CEP) or An ASMF which has been assessed and accepted as part of an authorised medicinal product in the UK", 
+    "The application concerns a new route/method of synthesis for active substance.",
+    "The application concerns use of the active substance for a new population or a new clinical indication.",
+    "The application concerns a new route of administration, or a new method of administration to the site of action or absorption.",
+    "The product is presented as a modified/controlled release dosage form or presented as a metered dose/powder inhaler.",  
+    "The application is for a sterile product which uses a new sterilisation method or container material in direct contact with the product.",
+    "The application for a new influenza vaccine, or a new manufacturer of strain, or an influenza vaccine using a new manufacturer or manufacturing process.",
+    "The application includes a new excipient not previously used in the UK.",
+    "None of the above"
+  ]
+},{
+  "type": "radiogroup",
+  "name": "question10",
+  "title": "Does your application relate to ?",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "Type IA/IAIN/IA Group", 
+    "Type IB", 
+    "Type II", 
+    "THR",
+    "Homeopathic"
+  ]
+},{
+  "type": "radiogroup",
+  "name": "question11",
+  "title": "Does your application consist of a ?",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "Single",
+    "Grouph"
+  ]
+},{
+  "type": "radiogroup",
+  "name": "question12",
+  "title": "What is the route of your variation?",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "National", 
+    "Chapter II of EC 1234/2008 and/or Reliance/Recognition"
+  ]
+},{
+  "type": "radiogroup",
+  "name": "question13",
+  "title": "Do any of the below changes apply to your Type II procedure (Type II Complex variation):",
+  "description": "Quality changes: -	Reformulation of the product introducing a novel excipient that has previously not been included in a medicinal product -	A new route of synthesis that has not previously been assessed and a Ph Eur Certificate of Suitability is not available* -	New method of sterilisation of the product* -	New container materials for a sterile product* -	New active ingredient manufacturer not previously approved to manufacture the active ingredient concerned and who does not hold a Ph Eur Certificate of Suitability for the substance concerned*. -	Flu Vaccine – new manufacturer or process -	Reformulation of the product that is supported by bioavailability studies -	Change in the product’s preservative system -	Change in excipients which significantly affects the pharmaceutical or therapeutic properties. * Specific to the active ingredient. Clinical changes: -	Variation applications supported by the results of clinical trials or other data (including pharmacological and toxicological tests as -	Well as extensive evidence from post marketing experience or publications) that need to be newly assessed. If you are submitting separate related variations and only one is supported by clinical data, that variation will attract a complex fee and the others will attract a standard fee -	If two or more concurrent applications are supported by substantial amounts of data each, that have not previously been assessed, they will each attract a complex fee",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "Yes", 
+    "No"
+  ]
+},{
+  "type": "radiogroup",
+  "name": "question14",
+  "title": "Does your application concern a change to the indications for use in either of the following scenarios (Type II Extended Complex variation)?",
+  "description": "(a) in a therapeutic area for which the product was not previously indicated for use; or (b) in respect of an organ, or any other part of the human body for which the product was not previously indicated for use, if the application is supported by data which comprises or includes the results of clinical trials or physicochemical, microbiological or pharmacological and toxicological tests.",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "Yes", 
+    "No"
+  ]
+},{
+  "type": "rating",
+  "name": "question15",
+  "title": "How many additional Strengths/Licences are you submitting? (If none, leave it as 1)",
+  "description": "Information for bulk applications: Where the submission does not include bulk applications, leave 0 in the box below and then press enter. In order to bulk a single, group variation or Worksharing procedure, the below criteria must apply: 1.	The changes are to authorisations registered under the same company number. 2.	The changes are identical across the lead and bulk members, and rely on the same supporting data. (QRD updates to the SPC do not need to meet this requirement) 3.	The authorisations included are not a combination of Mutual Recognition and National licences. Please note that the above bullet points 1 and 3 do not apply for Worksharing.",
+  "isRequired": true,
+  "rateMin": 1,
+  "rateMax": 20,
+  "minRateDescription": "(Most unlikely)",
+  "maxRateDescription": "(Most likely)",
+  "colCount": 1,
+  "choices": [
+    "Yes", 
+    "No"
+  ]
+},{
+  "type": "radiogroup",
+  "name": "question16",
+  "title": "Is your application a:",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "Standard",
+    "Complex",  
+    "New Excipient",
+    "Administrative",
+  ]
+},{
+  "type": "radiogroup",
+  "name": "question17",
+  "title": "Is your application a:",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "National Rules Scheme",
+    "Simplified Scheme",  
+  ]
+},{
+  "type": "radiogroup",
+  "name": "question18",
+  "title": "Is your application a:",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "Standard variation application",
+    "New indication",
+    "Other applications (for up to 30 variations where no further medical, technical or scientific assessment is required)",
+    "Other applications (for any subsequent variations where no further medical, technical or scientific assessment is required)",  
+  ]
+},{
+  "type": "radiogroup",
+  "name": "question19",
+  "title": "Is your application a:",
+  "isRequired": true,
+  "colCount": 1,
+  "choices": [
+    "New technical",
+    "Other applications (for up to 30 variations where no further medical, technical or scientific assessment is required)",
+    "Other applications (for any subsequent variations where no further medical, technical or scientific assessment is required)",  
+  ]
+}]
+};
+
+function App() {
+  const survey = new Model(surveyJson);
+  const alertResults = useCallback((sender) => {
+    // const results = JSON.stringify(sender.data);
+    // // alert(results);
+    // console.log(results);
+    console.log(sender.data)
+    var question1= sender.data["question1"]
+    var question2= sender.data["question2"]
+    var question3= sender.data["question3"]
+    var question4= sender.data["question4"]
+    var question5= sender.data["question5"]
+    var question6= sender.data["question6"]
+    var question7= sender.data["question7"]
+    var question8= sender.data["question8"]
+    var question9= sender.data["question9"]
+    var question10= sender.data["question10"]
+    var question11= sender.data["question11"]
+    var question12= sender.data["question12"]
+    var question13= sender.data["question13"]
+    var question14= sender.data["question14"] 
+    var question15= sender.data["question15"]
+    var question16= sender.data["question16"]
+    var question17= sender.data["question17"]
+    var question18= sender.data["question18"]
+    var question19= sender.data["question19"]
+
+    switch (question1) {
+      case 'Initial marketing authorisation application':
+        console.log('+1');
+        switch (question2){
+          case 'National (any other case including hybrid applications)':
+            console.log('+1');
+            break;
+          default:
+            console.log(`Sorry`);
+        }
+        break;
+      case 'Variation':
+        console.log("-1");
+        break;
+      default:
+        console.log(`Sorry`);
+    }
+    
 
 
-export default function SurveyJSReactApplication() {
-  return (
-    <Router>
-      <div>
-        <nav className="navbar navbar-default">
-          <div className="container-fluid">
-            <div className="navbar-header">
-              <a className="navbar-brand" href="/">
-                SurveyJS + ReactJS
-              </a>
-            </div>
-            <ul className="nav navbar-nav">
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/survey">Survey</Link>
-              </li>
-              <li>
-                <Link to="/creator">SurveyJS Creator</Link>
-              </li>
-              <li>
-                <Link to="/export">Export to PDF</Link>
-              </li>
-              <li>
-                <Link to="/analytics">Analytics</Link>
-              </li>
-              <li>
-                <Link to="/analyticstabulator">Results Table</Link>
-              </li>
-              <li>
-                <Link to="/analyticsdatatables">
-                  Results Table (IE Support)
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </nav>
 
-        <div className="app-content">
-          <Switch>
-            <Route exact path="/">
-              <HomePage />
-            </Route>
-            <Route path="/survey">
-              <SurveyPage />
-            </Route>
-            <Route path="/creator">
-              <CreatorPage />
-            </Route>
-            <Route path="/export">
-              <ExportToPDFPage />
-            </Route>
-            <Route path="/analytics">
-              <AnalyticsPage />
-            </Route>
-            <Route path="/analyticsdatatables">
-              <AnalyticsDatatablesPage />
-            </Route>
-            <Route path="/analyticstabulator">
-              <AnalyticsTabulatorPage />
-            </Route>
-          </Switch>
-        </div>
-      </div>
-    </Router>
-  );
+
+
+
+
+    // if (question1 == "Initial marketing authorisation application"){
+    //   console.log("yes")
+    // }else{
+    //   console.log("NO")
+    // }
+    
+    }
+  ,[]);
+
+  survey.onComplete.add(alertResults);
+
+  return <Survey model={survey} />;
 }
+
+export default App;

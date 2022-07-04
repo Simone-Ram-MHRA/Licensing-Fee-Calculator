@@ -16,6 +16,7 @@
     "survey-creator-core": "latest",
     "survey-creator-react": "latest",
     "survey-pdf": "latest",
+    "survey-react": "^1.9.28",
     "survey-react-ui": "latest",
     "surveyjs-widgets": "latest",
     "xlsx": "^0.18.5"
